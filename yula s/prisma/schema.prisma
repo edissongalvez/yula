@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Users
+
+model User {
+  id          Int       @id @default(autoincrement())
+  username    String    @unique @db.VarChar(16)
+  password    String    @db.VarChar(64)
+  photo       String    @default("files\\users\\default.webp")
+  bio         String    @default("Hola, uso Yula") @db.VarChar(64)
+  firstName   String    @db.VarChar(32)
+  lastName    String    @db.VarChar(32) 
+  telephone   String    @db.VarChar(9)
+  email       String    @db.VarChar(32)      
+  lastLogin   DateTime? 
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+  intern      Intern?
+  mentor      Mentor?
+}
+
+model University {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(32)
+  desc        String    @db.VarChar(128)
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+  careers Career[]
+}
+
+model Career {
+  id            Int         @id @default(autoincrement())
+  name          String      @db.VarChar(32)
+  desc          String      @db.VarChar(128)
+  universityId  Int
+  createdAt     DateTime    @default(now())
+  modifiedAt    DateTime    @updatedAt
+  university    University  @relation(fields: [universityId], references: [id])
+  interns       Intern[]
+}
+
+model Intern {
+  userId        Int       @unique
+  careerId      Int
+  createdAt     DateTime  @default(now())
+  modifiedAt    DateTime  @updatedAt
+  career        Career    @relation(fields: [careerId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
+  resume        Resume?        
+  applications  Application[]
+  
+}
+
+model Location {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(32)
+  createdAt     DateTime  @default(now())
+  modifiedAt    DateTime  @updatedAt
+  organizations Organization[]
+}
+
+model Organization {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(16)
+  desc        String    @db.VarChar(128)
+  address     String    @db.VarChar(32)
+  locationId  Int
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+  location    Location  @relation(fields: [locationId], references: [id])
+  mentors     Mentor[]
+  internships Internship[]
+}
+
+model Mentor {
+  userId          Int           @unique
+  organizationId  Int
+  createdAt       DateTime      @default(now())
+  modifiedAt      DateTime      @updatedAt
+  organization    Organization  @relation(fields: [organizationId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+  applications    Application[]
+}
+
+// Internships
+
+model InternshipCategory {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(16)
+  desc        String    @db.VarChar(128)
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+  internships Internship[]
+}
+
+model Internship {
+  id                    Int                 @id @default(autoincrement())
+  image                 String              @default("files\\internships\\default.webp")
+  name                  String              @db.VarChar(32)
+  desc                  String              @db.VarChar(128)
+  datePublished         DateTime            @default(now())
+  internshipStartDate   DateTime
+  noVacancies           Int
+  internshipCategoryId  Int
+  organizationId        Int
+  createdAt             DateTime            @default(now())
+  modifiedAt            DateTime            @updatedAt
+  internshipCategory    InternshipCategory  @relation(fields: [internshipCategoryId], references: [id])
+  organization          Organization        @relation(fields: [organizationId], references: [id])
+  applications          Application[]
+}
+
+// Application
+
+model Resume {
+  id          Int       @id @default(autoincrement())
+  education   String    @db.VarChar(256)
+  experience  String    @db.VarChar(256)
+  otherInfo   String    @db.VarChar(256)
+  internId    Int       @unique
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+  intern      Intern    @relation(fields: [internId], references: [userId])
+}
+
+model ApplicationStatus {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(16)
+  desc          String    @db.VarChar(128)
+  createdAt     DateTime  @default(now())
+  modifiedAt    DateTime  @updatedAt
+  applications  Application[]
+}
+
+model Application {
+  id              Int               @id @default(autoincrement())
+  dateApplication DateTime          @default(now())
+  internshipId    Int
+  internId        Int
+  mentorId        Int?              
+  statusId        Int               @default(1)
+  createdAt       DateTime          @default(now())
+  modifiedAt      DateTime          @updatedAt
+  internship      Internship        @relation(fields: [internshipId], references: [id])
+  intern          Intern            @relation(fields: [internId], references: [userId])
+  mentor          Mentor?           @relation(fields: [mentorId], references: [userId])
+  status          ApplicationStatus @relation(fields: [statusId], references: [id])
+  progresses      Progress[]
+}
+
+// Process
+
+model Progress {
+  id            Int         @id @default(autoincrement())
+  title         String
+  desc          String      @db.VarChar(128)
+  file          String
+  applicationId Int
+  createdAt     DateTime    @default(now())
+  modifiedAt    DateTime    @updatedAt
+  application   Application @relation(fields: [applicationId], references: [id])
+}
