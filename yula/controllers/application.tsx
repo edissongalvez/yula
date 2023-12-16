@@ -13,7 +13,7 @@ export interface Application {
     statusId: number,
     createdAt: Date,
     modifiedAt: Date,
-    intership: Internship,
+    internship: Internship,
     intern: Intern,
     mentor: Mentor,
     status: ApplicationStatus,

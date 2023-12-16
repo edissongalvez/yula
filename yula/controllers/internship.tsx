@@ -15,7 +15,7 @@ export interface Internship {
     organizationId: number,
     createdAt: Date,
     modifiedAt: Date,
-    intershipCategory: InternshipCategory,
+    internshipCategory: InternshipCategory,
     organization: Organization,
     applications: Application[]
 }

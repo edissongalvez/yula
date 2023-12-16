@@ -53,11 +53,11 @@ export default function SignUpScreen() {
     }
 
     const handleChangeIntern = (field: keyof typeof internData, isNumber?: boolean) => (value: any) => {
-        setData(prevInternData => ({ ...prevInternData, [field]: isNumber ? Number(value) : value }))
+        setInternData(prevInternData => ({ ...prevInternData, [field]: isNumber ? Number(value) : value }))
     }
 
     const handleChangeMentor = (field: keyof typeof mentorData, isNumber?: boolean) => (value: any) => {
-        setData(prevMentorData => ({ ...prevMentorData, [field]: isNumber ? Number(value) : value }))
+        setMentorData(prevMentorData => ({ ...prevMentorData, [field]: isNumber ? Number(value) : value }))
     }
 
     const handleChangeType = (type: number) => {
@@ -113,7 +113,7 @@ export default function SignUpScreen() {
                 }
 
                 Notify({ title: 'Usuario actualizado', desc: 'Se han guardado nuevos datos' })
-                router.replace('/user/account')
+                router.replace('/')
         } catch {
             Notify({ title: 'Usuario no guardado', desc: 'Revise los datos e intente nuevamente' })
         }

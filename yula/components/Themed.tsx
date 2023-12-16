@@ -147,6 +147,7 @@ export function Notify ( props: { title: string, desc: string }) {
 const styles = StyleSheet.create({
   body: {
     flex: 1
+    
   },
   bodyContent: {
     padding: 16,
@@ -154,7 +155,8 @@ const styles = StyleSheet.create({
     maxWidth: 672,
     width: '100%',
     // flex: 1,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginVertical: 48
   },
   groupedListContent: {
     borderRadius: 10,

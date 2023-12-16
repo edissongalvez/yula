@@ -21,6 +21,7 @@ async function main() {
             { username: 'davidmiller', password: await hashPassword('contraseña'), firstName: 'David', lastName: 'Miller', telephone: '999666777', email: 'davidmiller@yula.com' },
             { username: 'emilywhite', password: await hashPassword('contraseña'), firstName: 'Emily', lastName: 'White', telephone: '111777888', email: 'emilywhite@yula.com' },
             { username: 'michaelscott', password: await hashPassword('contraseña'), firstName: 'Michael', lastName: 'Scott', telephone: '222888999', email: 'michaelscott@yula.com' },
+            
             { username: 'sarahbrown', password: await hashPassword('contraseña'), firstName: 'Sarah', lastName: 'Brown', telephone: '333999000', email: 'sarahbrown@yula.com' },
             { username: 'ryanwilson', password: await hashPassword('contraseña'), firstName: 'Ryan', lastName: 'Wilson', telephone: '444000111', email: 'ryanwilson@yula.com' },
             { username: 'jessicasmith', password: await hashPassword('contraseña'), firstName: 'Jessica', lastName: 'Smith', telephone: '555111222', email: 'jessicasmith@yula.com' },

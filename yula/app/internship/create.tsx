@@ -87,7 +87,7 @@ export default function CreateInternshipScreen () {
 
     return (
         <Body>
-            <Stack.Screen options={{ title: 'Crear pasantía', headerTitleAlign: 'center', presentation: 'formSheet', headerRight: () => (
+            <Stack.Screen options={{ title: 'Crear oferta de pasantía', headerTitleAlign: 'center', presentation: 'formSheet', headerRight: () => (
                 <Pressable onPress={handleSubmit}>
                     {({ pressed }) => (
                         // <Ionicons name='person-add-outline' size={25} color={Colors[colorScheme ?? 'light'].tint} style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }} />
@@ -99,10 +99,10 @@ export default function CreateInternshipScreen () {
                 <Image source={image ? { uri: image.uri } : require('../../assets/images/image.webp')} style={[{ borderColor: Colors[colorScheme ?? 'light'].tint }, styles.image]} />
             </Pressable>
             <GroupedList>
-                <TextField title='Título' placeholder='Ingese título' value={data.title} onChangeText={handleChange('title')} />
-                <TextField title='Descripción' placeholder='Ingese descripción' value={data.desc} onChangeText={handleChange('desc')} />
+                <TextField title='Título' placeholder='Ingrese título' value={data.title} onChangeText={handleChange('title')} />
+                <TextField title='Descripción' placeholder='Ingrese descripción' value={data.desc} onChangeText={handleChange('desc')} />
 
-                <TextField title='Vacantes' placeholder='Ingrese número de vacantes' value={data.noVacancies.toString()} onChangeText={handleChange('noVacancies', true)} keyboardType='numeric' />
+                <TextField title='Vacantes' placeholder='Ingrese número de vacantes' value={data.noVacancies.toString()} onChangeText={handleChange('noVacancies', true)} inputMode='numeric' />
                 <Picker title='Categoría' selectedValue={data.internshipCategoryId} onValueChange={(selectedValue: unknown) => handleChange('internshipCategoryId', true)(selectedValue as string)}>
                     {internshipCategories?.map(internshipCategory => (
                         <PickerItem key={internshipCategory.id} label={internshipCategory.name} value={internshipCategory.id} />

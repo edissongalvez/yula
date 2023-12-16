@@ -27,7 +27,7 @@ export const createInternship = async (image: string, name: string, desc: string
 export const getInternships = async () => {
     return await prisma.internship.findMany({
         include: {
-            organization: true,
+            organization: { include: { location: true } },
             internshipCategory: true,
             applications: true
         }
@@ -40,7 +40,7 @@ export const getInternship = async (id: number) => {
             id
         },
         include: {
-            organization: true,
+            organization: { include: { location: true } },
             internshipCategory: true,
             applications: true
         }

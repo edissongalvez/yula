@@ -3,11 +3,12 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font'
 import { Link, SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
-import { Pressable, useColorScheme } from 'react-native'
+import { Pressable, StyleSheet, useColorScheme } from 'react-native'
 import Colors from '../constants/Colors'
 
 import { UserProvider } from '../context/UserContext'
 import { Ionicons } from '@expo/vector-icons'
+import { BlurView } from 'expo-blur'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,8 +53,8 @@ function RootLayoutNav() {
   return (
     <UserProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: true, headerTitle: '', headerRight: () => (
+        <Stack screenOptions={{ headerBackground: () => <BlurUI />  }}>
+          <Stack.Screen name='(tabs)' options={{ headerShown: true, headerTitle: '', headerBackVisible: false, headerRight: () => (
             <Link href='/user/signIn' asChild>
               <Pressable>
                 {({ pressed }) => (
@@ -61,9 +62,8 @@ function RootLayoutNav() {
                 )}
               </Pressable>
             </Link>
-          )  }} />
+          ) }} />
           <Stack.Screen name="user/signIn" options={{ headerTitle: 'Iniciar sesión', headerTitleAlign: 'center', headerRight: () => (
-            // <Link href={'/user/create'} style={{ color: Colors[colorScheme ?? 'light'].tint , marginRight: 15, opacity: 0.5 }} asChild>Crear cuenta</Link>
             <Link href='/user/create' asChild>
               <Pressable>
                 {({ pressed }) => (
@@ -72,9 +72,32 @@ function RootLayoutNav() {
               </Pressable>
             </Link>
           ), presentation: 'modal' }} />
-          <Stack.Screen name='user/create' options={{ headerTitle: 'Crear cuenta', headerTitleAlign: 'center', presentation: 'formSheet' }} />
+          {/* <Stack.Screen name='user/create' options={{ headerTitle: 'Crear cuenta', headerTitleAlign: 'center', presentation: 'formSheet', headerRight: () => <TrailingButton href='/internship/create' name='' /> }} /> */}
         </Stack>
       </ThemeProvider>
     </UserProvider>
   )
+}
+
+function BlurUI () {
+  const colorScheme = useColorScheme()
+
+  return <BlurView tint={colorScheme === 'light' ? 'light' : 'dark'} intensity={80} style={StyleSheet.absoluteFill} />
+}
+
+interface TrailingButtonProps {
+  href: string;
+  name: string;
+}
+
+function TrailingButton ({href, name}: TrailingButtonProps) {
+  const colorScheme = useColorScheme()
+
+  return  <Link href={href as any} asChild>
+    <Pressable>
+      {({ pressed }) => (
+        <Ionicons name={name as any} size={25} color={Colors[colorScheme ?? 'light'].tint} style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }} />
+      )}
+    </Pressable>
+  </Link>
 }

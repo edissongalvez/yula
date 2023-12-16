@@ -3,6 +3,7 @@ import { Application } from './application'
 
 export interface ApplicationStatus {
     id: number,
+    name: string,
     desc: string,
     createdAt: Date,
     modifiedAt: Date,

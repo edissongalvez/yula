@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, useColorScheme } from 'react-native'
 import { Stack, router } from 'expo-router'
 import * as ImagePicker from 'expo-image-picker'
 
-import { Body, Button, GroupedList, Notify, Picker, PickerItem, Separator, Text, TextField } from '../../components/Themed'
+import { Body, GroupedList, Notify, Picker, PickerItem, Separator, Text, TextField } from '../../components/Themed'
 // import UserTypeController, { UserType } from '../../controllers/userType'
 import Colors from '../../constants/Colors'
 import UserController from '../../controllers/user'

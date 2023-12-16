@@ -1,10 +1,10 @@
-import { Image, StyleSheet } from 'react-native'
+import { Image, Pressable, StyleSheet } from 'react-native'
 
-import EditScreenInfo from '../../components/EditScreenInfo'
 import { Body, Text, View } from '../../components/Themed'
 import { useEffect, useState } from 'react'
 import InternshipController, { Internship } from '../../controllers/internship'
 import { useUser } from '../../context/UserContext'
+import { Link } from 'expo-router'
 
 export default function TabOneScreen() {
 
@@ -19,24 +19,33 @@ export default function TabOneScreen() {
         setInternships(internships?.filter(internship => internship.organizationId === user.mentor.organizationId));
       }
     })
-  }, [user])
+  }, [internships, user])
 
-  return (
+  return internships && internships.length > 0 ? 
     <Body>
       { internships?.map(internship => (
-        <View key={internship.id}>
-          <Image source={{ uri: `${process.env.EXPO_PUBLIC_API_URL}/${internship.image.replace(/\\/g, '/')}` }} style={styles.image} />
-          <View style={styles.content}>
-            <Text style={styles.title}>{internship.name}</Text>
-            <Text lightColor='rgba(60,60,67,.6)' darkColor='rgba(235,235,245,.6)' style={styles.desc} numberOfLines={3}>{internship.desc}</Text>
+        <Link key={internship.id} href={`/internship/${internship.id}`}>
+          <View style={styles.container}>
+            <Image source={{ uri: `${process.env.EXPO_PUBLIC_API_URL}/${internship.image.replace(/\\/g, '/')}` }} style={styles.image} />
+            <View style={styles.content}>
+              <Text style={styles.title}>{internship.name}</Text>
+              <Text lightColor='rgba(60,60,67,.6)' darkColor='rgba(235,235,245,.6)' style={styles.desc} numberOfLines={2}>{internship.desc}</Text>
+            </View>
           </View>
-        </View>
+        </Link>
+        
       ))}
     </Body>
-  );
+  :
+    <Body center>
+      <Text style={styles.textNull} lightColor='rgba(60,60,67,.6)' darkColor='rgba(235,235,245,.6)'>Sin ofertas de pasantías</Text>
+    </Body>
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%'
+  },
   content: {
     padding: 16
   },
@@ -51,5 +60,9 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: 13
+  },
+  textNull: {
+    fontSize: 13,
+    textAlign: 'center'
   }
 })

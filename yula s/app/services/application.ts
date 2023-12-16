@@ -22,10 +22,10 @@ export const createApplication = async (internshipId: number, internId: number) 
 export const getApplications = async () => {
     return await prisma.application.findMany({
         include: {
-            internship: true,
-            intern: true,
+            internship: { include: { internshipCategory: true } },
+            intern: { include: { user: true, resume: true, career: { include: { university: true } } } },
             progresses: true,
-            mentor: true,
+            mentor: { include: { user: true } },
             status: true
         }
     })
@@ -37,10 +37,10 @@ export const getApplication = async (id: number) => {
             id
         },
         include: {
-            internship: true,
-            intern: true,
+            internship: { include: { internshipCategory: true } },
+            intern: { include: { user: true, resume: true, career: { include: { university: true } } } },
             progresses: true,
-            mentor: true,
+            mentor: { include: { user: true } },
             status: true
         }
     })
